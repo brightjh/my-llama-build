@@ -1,0 +1,36 @@
+name: Build & Push Intel llama.cpp to Alibaba ACR
+
+on:
+  push:
+    branches:
+      - main  # 你的默认分支名，可能是 master
+  workflow_dispatch: # 支持手动触发
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to Alibaba Cloud ACR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ secrets.ACR_REGISTRY }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .                           # 构建上下文为当前仓库根目录
+          file: ./.devops/intel.Dockerfile     # 指定 Intel Dockerfile 的位置
+          push: true
+          target: server
+          build-args: |                        
+            GGML_SYCL_F16=ON
+          tags: |
+            ${{ secrets.ACR_REGISTRY }}/brightzm/llama-intel:latest
+            ${{ secrets.ACR_REGISTRY }}/brightzm/llama-intel:${{ github.sha }}
+          # 注意：请将上面的 llama-ns/llama-intel 替换为你实际在阿里云创建的命名空间和仓库名！
