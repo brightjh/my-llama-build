@@ -54,6 +54,7 @@
 /tmp/
 /autogen-*.md
 /common/build-info.cpp
+/tools/server/public
 
 # Deprecated
 
@@ -97,8 +98,6 @@
 
 /tools/server/webui/node_modules
 /tools/server/webui/dist
-# we no longer use gz for index.html
-/tools/server/public/index.html.gz
 
 # Python
 
@@ -111,6 +110,7 @@ uv.lock
 
 # Nix
 
+flake.lock
 /result
 
 # Test binaries
