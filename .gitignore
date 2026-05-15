@@ -62,7 +62,8 @@
 
 # CI
 
-!/.github/workflows/*.yml
+/.github/workflows/
+!/.github/workflows/build-intel-image.yml
 
 # Models
 
